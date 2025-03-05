@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "authors": [
     {
-      "name": "VivaFidel",
+      "name": "VivaFidel"
     }
   ],
   "esmodules": ["scripts/main.js"],
