@@ -1,0 +1,78 @@
+/* Общий контейнер */
+.private-message-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    background: url('https://cdn.pixabay.com/photo/2017/09/19/17/24/old-paper-2761416_960_720.jpg');
+    background-size: cover;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    font-family: "Times New Roman", serif;
+    color: #222;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  /* Заголовок с именем отправителя */
+  .private-message-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  }
+  
+  .private-message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #555;
+  }
+  
+  .private-message-user {
+    font-weight: bold;
+    font-size: 14px;
+  }
+  
+  /* Само сообщение */
+  .private-message-body {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  /* Кнопка OK */
+  .private-message-footer {
+    text-align: right;
+    margin-top: 10px;
+  }
+  
+  .ok-button {
+    background: #444;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: background 0.3s;
+  }
+  
+  .ok-button:hover {
+    background: #666;
+  }
+  
+  /* Анимация появления */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
