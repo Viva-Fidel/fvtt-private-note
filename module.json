@@ -1,8 +1,8 @@
 {
   "id": "private-note",
-  "title": "Send private messages to GM",
-  "description": "Позволяет игрокам отправлять приватные сообщения ГМу через команду в чате",
-  "version": "0.0.1",
+  "title": "VivaFidel: Send private messages to GM",
+  "description": "Send private requests to your GM through chat",
+  "version": "0.0.3",
   "authors": [
     {
       "name": "VivaFidel"
@@ -10,11 +10,23 @@
   ],
   "esmodules": ["scripts/main.js"],
   "styles": ["styles/styles.css"],
-  "minimumCoreVersion": "11.0.0",
+  "minimumCoreVersion": "12.0.0",
   "compatibility": {
-    "minimum": "11.0.0",
-    "verified": "11.0.0"
+    "minimum": "12.0.0",
+    "verified": "12.0.0"
   },
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "ru",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+],
   "manifest": "https://github.com/Viva-Fidel/fvtt-private-note/raw/main/module.json",
   "download": "https://github.com/Viva-Fidel/fvtt-private-note/archive/refs/heads/main.zip",
   "url": "https://github.com/Viva-Fidel/fvtt-private-note"

@@ -1,0 +1,5 @@
+{
+    "private-note.cooldown.name": "Cooldown (seconds)",
+    "private-note.cooldown.hint": "Minimum time between sending messages"
+  }
+  

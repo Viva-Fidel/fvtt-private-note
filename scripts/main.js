@@ -1,12 +1,12 @@
 class PrivateMessageToGM {
-    static MODULE_ID = "private-message-to-gm";
+    static MODULE_ID = "private-note";
     static cooldown = 0;
   
     /** Регистрируем настройку Cooldown */
     static registerSettings() {
       game.settings.register(this.MODULE_ID, "cooldownTime", {
-        name: "Cooldown (секунды)",
-        hint: "Минимальное время между отправкой сообщений",
+        name: game.i18n.localize("private-note.cooldown.name"),
+        hint: game.i18n.localize("private-note.cooldown.hint"),
         scope: "world",
         config: true,
         type: Number,
@@ -96,6 +96,13 @@ class PrivateMessageToGM {
   /** Инициализация модуля */
   Hooks.once("init", () => {
     PrivateMessageToGM.registerSettings();
-    Hooks.on("chatMessage", PrivateMessageToGM.onChatMessage.bind(PrivateMessageToGM));
+    Hooks.on("chatMessage", (chatLog, message, chatData) => {
+      if (message.startsWith("/pmgm")) {
+        PrivateMessageToGM.onChatMessage(message, chatData);
+        return false; // Блокируем стандартное отображение в чате
+      }
+      return true;
+    });
   });
+  
   
