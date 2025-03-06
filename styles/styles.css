@@ -1,19 +1,19 @@
 /* Общий контейнер */
 .private-message-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 300px;
-    background: url('https://cdn.pixabay.com/photo/2017/09/19/17/24/old-paper-2761416_960_720.jpg');
-    background-size: cover;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    padding: 12px;
-    font-family: "Times New Roman", serif;
-    color: #222;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.5s ease-in-out;
-  }
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  background: linear-gradient(45deg, #f3e1d7, #f7e7a9); /* Градиент */
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: "Times New Roman", serif;
+  color: #222;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
   
   /* Заголовок с именем отправителя */
   .private-message-header {
