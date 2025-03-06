@@ -1,5 +1,9 @@
 {
     "private-note.cooldown.name": "Задержка (секунды)",
-    "private-note.cooldown.hint": "Минимальное время между отправкой сообщений"
+    "private-note.cooldown.hint": "Минимальное время между отправкой сообщений",
+    "private-note.cooldown.warn": "Вы можете отправить новое сообщение через {seconds} сек.",
+    "private-note.no-gm": "Нет активных ГМов.",
+    "private-note.hidden-request": "Скрытая заявка от {name}:",
+    "private-note.message-sent": "Сообщение отправлено ГМу."
   }
   

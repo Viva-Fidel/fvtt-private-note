@@ -18,12 +18,13 @@ class PrivateMessageToGM {
     /** Отправка сообщения ГМам */
     static async sendMessageToGM(user, message) {
       if (!message.trim()) return;
-  
+    
       const cooldownTime = game.settings.get(this.MODULE_ID, "cooldownTime") * 1000;
       const now = Date.now();
-  
+      const remainingTime = Math.ceil((this.cooldown + cooldownTime - now) / 1000); // Остаток в секундах
+    
       if (now - this.cooldown < cooldownTime) {
-        ui.notifications.warn("Вы можете отправить новое сообщение позже.");
+        ui.notifications.warn(game.i18n.format("private-note.cooldown.warn", { seconds: remainingTime }));
         return;
       }
   
@@ -32,7 +33,7 @@ class PrivateMessageToGM {
       // Получаем список активных ГМов
       const gms = game.users.filter(user => user.isGM && user.active);
       if (gms.length === 0) {
-        ui.notifications.error("Нет активных ГМов.");
+        ui.notifications.error(game.i18n.localize("private-note.no-gm"));
         return;
       }
   
@@ -41,16 +42,14 @@ class PrivateMessageToGM {
         ChatMessage.create({
           user: user.id,
           whisper: [gm.id],
-          content: `<strong>Сообщение от ${user.name}:</strong> ${message}`
+          content: `<strong>${game.i18n.format("private-note.hidden-request", { name: user.name })}</strong> ${message}`
         });
   
         // Показываем всплывающее сообщение у ГМа
-        if (gm.id === game.user.id) {
-          this.showPopupMessage(user, message);
-        }
+        this.showPopupMessage(user, message);
       }
   
-      ui.notifications.info("Сообщение отправлено ГМу.");
+      ui.notifications.info(game.i18n.localize("private-note.message-sent"));
     }
   
     /** Обработчик команды в чате */
