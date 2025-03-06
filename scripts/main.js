@@ -65,38 +65,25 @@ class PrivateMessageToGM {
 
   /** Всплывающее сообщение у ГМа */
   static async showPopupMessage(user, message) {
-    // Находим шаблон по ID
-    const template = document.getElementById("privateMessageTemplate");
-
-    if (!template) {
-      console.error("Шаблон не найден!");
-      return;
-    }
-
-    // Клонируем содержимое шаблона
-    const clone = template.content.cloneNode(true);
-
-    // Получаем элементы из клонированного шаблона
-    const avatarImg = clone.querySelector(".private-message-avatar");
-    const userName = clone.querySelector(".private-message-user");
-    const messageText = clone.querySelector(".private-message-body p");
-    const okButton = clone.querySelector(".ok-button");
-
-    // Заполняем шаблон данными
-    avatarImg.src = user.avatar;
-    userName.textContent = user.name;
-    messageText.textContent = message;
-
-    // Добавляем шаблон в DOM
-    document.body.appendChild(clone);
-
-    // Добавляем обработчик для кнопки OK
-    okButton.addEventListener("click", () => {
-      clone.remove();
+    const templatePath = "modules/private-note/templates/popup-template.html"; // Убедитесь, что путь правильный
+    const html = await renderTemplate(templatePath, {
+      avatar: user.avatar,
+      username: user.name,
+      message: message,
     });
-
+  
+    // Создаем div-контейнер и вставляем в него загруженный HTML
+    const container = document.createElement("div");
+    container.innerHTML = html;
+    document.body.appendChild(container);
+  
+    // Добавляем обработчик кнопки "OK"
+    container.querySelector(".ok-button").addEventListener("click", () => {
+      container.remove();
+    });
+  
     // Авто-закрытие через 10 секунд
-    setTimeout(() => clone.remove(), 10000);
+    setTimeout(() => container.remove(), 10000);
   }
 }
 
