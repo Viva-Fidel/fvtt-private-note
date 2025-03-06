@@ -2,7 +2,7 @@
   "id": "private-note",
   "title": "VivaFidel: Send private messages to GM",
   "description": "Send private requests to your GM through chat",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "authors": [
     {
       "name": "VivaFidel"
@@ -23,8 +23,8 @@
     },
     {
       "lang": "ru",
-      "name": "English",
-      "path": "lang/en.json"
+      "name": "Russian",
+      "path": "lang/ru.json"
     }
 ],
   "manifest": "https://github.com/Viva-Fidel/fvtt-private-note/raw/main/module.json",
