@@ -16,7 +16,7 @@ class PrivateMessageToGM {
   }
 
   /** Отправка сообщения ГМам */
-  static async sendMessageToGM(user, message) {
+  static async sendMessageToGM(sender, message) {
     if (!message.trim()) return;
 
     const cooldownTime = game.settings.get(this.MODULE_ID, "cooldownTime") * 1000;
@@ -40,13 +40,15 @@ class PrivateMessageToGM {
     // Отправляем личное сообщение всем ГМам
     for (let gm of gms) {
       ChatMessage.create({
-        user: user.id,
+        user: sender.id,
         whisper: [gm.id],
-        content: `<strong>${game.i18n.format("private-note.hidden-request", { name: user.name })}</strong> ${message}`
+        content: `<strong>${game.i18n.format("private-note.hidden-request", { name: sender.name })}</strong> ${message}`
       });
 
-      // Показываем всплывающее сообщение ГМам
-        this.showPopupMessage(user, message);
+      // Показываем всплывающее сообщение **только у ГМов**
+      if (gm.id === game.user.id) {
+        this.showPopupMessage(sender, message);
+      }
     }
 
     ui.notifications.info(game.i18n.localize("private-note.message-sent"));
@@ -56,22 +58,22 @@ class PrivateMessageToGM {
   static onChatMessage(message, chatData) {
     if (!message.startsWith("/pmgm")) return true;
 
-    const user = game.user;
+    const sender = game.users.get(chatData.user); // Получаем отправителя из chatData
     const text = message.replace(/^\/pmgm\s*/, "");
 
-    this.sendMessageToGM(user, text);
+    this.sendMessageToGM(sender, text);
     return false;
   }
 
   /** Всплывающее сообщение у ГМа */
-  static async showPopupMessage(user, message) {
-    new Dialog({
+  static async showPopupMessage(sender, message) {
+    const dialog = new Dialog({
       title: game.i18n.localize("private-note.popup.title"),
       content: `
         <div class="private-message-container">
           <div class="private-message-header">
-            <img class="private-message-avatar" src="${user.avatar}" alt="Avatar">
-            <span class="private-message-user">${user.name}</span>
+            <img class="private-message-avatar" src="${sender.avatar}" alt="Avatar">
+            <span class="private-message-user">${sender.name}</span>
           </div>
           <div class="private-message-body">${message}</div>
         </div>
@@ -83,12 +85,14 @@ class PrivateMessageToGM {
         }
       },
       default: "ok"
-    }).render(true);
+    });
+
+    dialog.render(true);
 
     // Закрытие через 10 секунд
-  setTimeout(() => {
-    dialog.close();
-  }, 10000);
+    setTimeout(() => {
+      dialog.close();
+    }, 10000);
   }
 }
 

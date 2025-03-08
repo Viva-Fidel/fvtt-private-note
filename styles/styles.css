@@ -4,9 +4,6 @@
   align-items: center;
   padding: 12px;
   background: linear-gradient(45deg, #f1ebe8);
-  border-radius: 8px;
-  color: #222;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .private-message-header {
