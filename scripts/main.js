@@ -64,27 +64,28 @@ class PrivateMessageToGM {
   }
 
   /** Всплывающее сообщение у ГМа */
-  static async showPopupMessage(user, message) {
-    const templatePath = "modules/private-note/templates/popup-template.html"; // Убедитесь, что путь правильный
-    const html = await renderTemplate(templatePath, {
-      avatar: user.avatar,
-      username: user.name,
-      message: message,
-    });
-  
-    // Создаем div-контейнер и вставляем в него загруженный HTML
-    const container = document.createElement("div");
-    container.innerHTML = html;
-    document.body.appendChild(container);
-  
-    // Добавляем обработчик кнопки "OK"
-    container.querySelector(".ok-button").addEventListener("click", () => {
-      container.remove();
-    });
-  
-    // Авто-закрытие через 10 секунд
-    setTimeout(() => container.remove(), 10000);
-  }
+static async showPopupMessage(user, message) {
+  new Dialog({
+    title: game.i18n.localize("private-note.popup.title"),
+    content: `<div class="private-message-container">
+      <div class="private-message-header">
+        <img class="private-message-avatar" src="${user.avatar}" alt="Avatar">
+        <span class="private-message-user">${user.name}</span>
+      </div>
+      <div class="private-message-body">
+        <p>${message}</p>
+      </div>
+    </div>`,
+    buttons: {
+      ok: {
+        label: "OK",
+        callback: () => console.log("Сообщение закрыто")
+      }
+    },
+    default: "ok"
+  }).render(true);
+}
+
 }
 
 /** Инициализация модуля */
