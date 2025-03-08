@@ -46,8 +46,8 @@ class PrivateMessageToGM {
       });
     }
 
-    // Отправляем событие через сокет всем ГМам
-    game.socket.emit("module.private-note", { senderId: sender.id, message });
+    // Оповещаем всех активных ГМов, чтобы они показали окно
+    game.socket.emit(`module.${this.MODULE_ID}`, { senderId: sender.id, message });
 
     ui.notifications.info(game.i18n.localize("private-note.message-sent"));
   }
@@ -92,6 +92,16 @@ class PrivateMessageToGM {
       dialog.close();
     }, 10000);
   }
+
+  /** Обработчик входящих сообщений от сокета */
+  static onSocketMessage(data) {
+    if (!game.user.isGM) return;
+
+    const sender = game.users.get(data.senderId);
+    if (!sender) return;
+
+    this.showPopupMessage(sender, data.message);
+  }
 }
 
 /** Инициализация модуля */
@@ -101,14 +111,9 @@ Hooks.once("init", () => {
   Hooks.on("chatMessage", (chatLog, message, chatData) => {
     return PrivateMessageToGM.onChatMessage(message, chatData);
   });
-});
 
-/** Обработчик сокета для отображения модального окна у всех ГМов */
-Hooks.once("ready", () => {
-  game.socket.on("module.private-note", (data) => {
-    if (game.user.isGM) {
-      const sender = game.users.get(data.senderId);
-      PrivateMessageToGM.showPopupMessage(sender, data.message);
-    }
+  // Подписываемся на сообщения от сокета
+  game.socket.on(`module.${PrivateMessageToGM.MODULE_ID}`, data => {
+    PrivateMessageToGM.onSocketMessage(data);
   });
 });
