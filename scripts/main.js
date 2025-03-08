@@ -10,7 +10,7 @@ class PrivateMessageToGM {
       scope: "world",
       config: true,
       type: Number,
-      default: 10,
+      default: 5,
       range: { min: 1, max: 60, step: 1 }
     });
   }
@@ -45,10 +45,8 @@ class PrivateMessageToGM {
         content: `<strong>${game.i18n.format("private-note.hidden-request", { name: user.name })}</strong> ${message}`
       });
 
-      // Показываем всплывающее сообщение у ГМа
-      if (gm.id === game.user.id) {
+      // Показываем всплывающее сообщение ГМам
         this.showPopupMessage(user, message);
-      }
     }
 
     ui.notifications.info(game.i18n.localize("private-note.message-sent"));
@@ -86,6 +84,11 @@ class PrivateMessageToGM {
       },
       default: "ok"
     }).render(true);
+
+    // Закрытие через 10 секунд
+  setTimeout(() => {
+    dialog.close();
+  }, 10000);
   }
 }
 
