@@ -1,24 +1,14 @@
-/* Общий контейнер */
 .private-message-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 320px;
-  background: linear-gradient(45deg, #f3e1d7, #f7e7a9); /* Градиент */
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 8px;
-  padding: 12px;
-  font-family: "Times New Roman", serif;
-  color: #222;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  animation: fadeIn 0.5s ease-in-out;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 12px;
+  background: linear-gradient(45deg, #f3e1d7, #f7e7a9);
+  border-radius: 8px;
+  color: #222;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-/* Заголовок с именем отправителя */
 .private-message-header {
   display: flex;
   align-items: center;
@@ -37,49 +27,10 @@
 
 .private-message-user {
   font-weight: bold;
-  font-size: 14px;
 }
 
-/* Само сообщение */
 .private-message-body {
   margin-top: 10px;
   font-size: 14px;
-  line-height: 1.5;
   text-align: center;
-  width: 100%;
-}
-
-/* Кнопка OK */
-.private-message-footer {
-  margin-top: 12px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.ok-button {
-  background: #444;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: background 0.3s;
-}
-
-.ok-button:hover {
-  background: #666;
-}
-
-/* Анимация появления */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -45%);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
 }

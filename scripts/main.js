@@ -21,7 +21,7 @@ class PrivateMessageToGM {
 
     const cooldownTime = game.settings.get(this.MODULE_ID, "cooldownTime") * 1000;
     const now = Date.now();
-    const remainingTime = Math.ceil((this.cooldown + cooldownTime - now) / 1000); // Остаток в секундах
+    const remainingTime = Math.ceil((this.cooldown + cooldownTime - now) / 1000);
 
     if (now - this.cooldown < cooldownTime) {
       ui.notifications.warn(game.i18n.format("private-note.cooldown.warn", { seconds: remainingTime }));
@@ -31,7 +31,7 @@ class PrivateMessageToGM {
     this.cooldown = now;
 
     // Получаем список активных ГМов
-    const gms = game.users.filter(user => user.isGM && user.active);
+    const gms = game.users.filter(u => u.isGM && u.active);
     if (gms.length === 0) {
       ui.notifications.error(game.i18n.localize("private-note.no-gm"));
       return;
@@ -46,7 +46,9 @@ class PrivateMessageToGM {
       });
 
       // Показываем всплывающее сообщение у ГМа
-      this.showPopupMessage(user, message);
+      if (gm.id === game.user.id) {
+        this.showPopupMessage(user, message);
+      }
     }
 
     ui.notifications.info(game.i18n.localize("private-note.message-sent"));
@@ -60,50 +62,38 @@ class PrivateMessageToGM {
     const text = message.replace(/^\/pmgm\s*/, "");
 
     this.sendMessageToGM(user, text);
-    return false; // Блокируем стандартное отображение в чате
+    return false;
   }
 
   /** Всплывающее сообщение у ГМа */
-/** Всплывающее сообщение у ГМа */
-static async showPopupMessage(user, message) {
-  new Dialog({
-    title: game.i18n.localize("private-note.popup.title"),
-    content: `
-      <div class="private-message-container">
-        <div class="private-message-header">
-          <img class="private-message-avatar" src="${user.avatar}" alt="Avatar">
-          <span class="private-message-user">${user.name}</span>
+  static async showPopupMessage(user, message) {
+    new Dialog({
+      title: game.i18n.localize("private-note.popup.title"),
+      content: `
+        <div class="private-message-container">
+          <div class="private-message-header">
+            <img class="private-message-avatar" src="${user.avatar}" alt="Avatar">
+            <span class="private-message-user">${user.name}</span>
+          </div>
+          <div class="private-message-body">${message}</div>
         </div>
-        <div class="private-message-body">${message}</div>
-      </div>
-    `,
-    buttons: {
-      ok: {
-        label: "OK",
-        callback: () => console.log("Сообщение закрыто")
-      }
-    },
-    default: "ok"
-  }, {
-    width: 300,
-    height: "auto",
-    classes: ["private-message-dialog"]
-  }).render(true);
-}
-
+      `,
+      buttons: {
+        ok: {
+          label: "OK",
+          callback: () => console.log("Сообщение закрыто")
+        }
+      },
+      default: "ok"
+    }).render(true);
+  }
 }
 
 /** Инициализация модуля */
 Hooks.once("init", () => {
-  // Регистрируем настройки
   PrivateMessageToGM.registerSettings();
 
-  // Обработчик сообщений в чате
   Hooks.on("chatMessage", (chatLog, message, chatData) => {
-    if (message.startsWith("/pmgm")) {
-      PrivateMessageToGM.onChatMessage(message, chatData);
-      return false; // Блокируем стандартное отображение в чате
-    }
-    return true;
+    return PrivateMessageToGM.onChatMessage(message, chatData);
   });
 });
