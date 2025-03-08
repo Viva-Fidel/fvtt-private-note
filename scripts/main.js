@@ -44,10 +44,10 @@ class PrivateMessageToGM {
         whisper: [gm.id],
         content: `<strong>${game.i18n.format("private-note.hidden-request", { name: sender.name })}</strong> ${message}`
       });
-    }
 
-    // Оповещаем всех активных ГМов, чтобы они показали окно
-    game.socket.emit(`module.${this.MODULE_ID}`, { senderId: sender.id, message });
+      // Показываем всплывающее сообщение **только у ГМов**
+      this.showPopupMessage(sender, message);
+    }
 
     ui.notifications.info(game.i18n.localize("private-note.message-sent"));
   }
@@ -92,16 +92,6 @@ class PrivateMessageToGM {
       dialog.close();
     }, 10000);
   }
-
-  /** Обработчик входящих сообщений от сокета */
-  static onSocketMessage(data) {
-    if (!game.user.isGM) return;
-
-    const sender = game.users.get(data.senderId);
-    if (!sender) return;
-
-    this.showPopupMessage(sender, data.message);
-  }
 }
 
 /** Инициализация модуля */
@@ -110,10 +100,5 @@ Hooks.once("init", () => {
 
   Hooks.on("chatMessage", (chatLog, message, chatData) => {
     return PrivateMessageToGM.onChatMessage(message, chatData);
-  });
-
-  // Подписываемся на сообщения от сокета
-  game.socket.on(`module.${PrivateMessageToGM.MODULE_ID}`, data => {
-    PrivateMessageToGM.onSocketMessage(data);
   });
 });
