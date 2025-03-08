@@ -4,6 +4,7 @@
     "private-note.cooldown.warn": "You can send a new message in {seconds} sec.",
     "private-note.no-gm": "No active GMs.",
     "private-note.hidden-request": "Hidden request from {name}:",
-    "private-note.message-sent": "Message sent to the GM."
+    "private-note.message-sent": "Message sent to the GM.",
+    "private-note.popup.title": "New hidden request"
   }
   

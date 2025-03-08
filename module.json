@@ -2,7 +2,7 @@
   "id": "private-note",
   "title": "VivaFidel: Send private messages to GM",
   "description": "Send private requests to your GM through chat",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "authors": [
     {
       "name": "VivaFidel"
