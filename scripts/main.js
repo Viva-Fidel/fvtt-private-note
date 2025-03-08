@@ -64,18 +64,19 @@ class PrivateMessageToGM {
   }
 
   /** Всплывающее сообщение у ГМа */
+/** Всплывающее сообщение у ГМа */
 static async showPopupMessage(user, message) {
   new Dialog({
     title: game.i18n.localize("private-note.popup.title"),
-    content: `<div class="private-message-container">
-      <div class="private-message-header">
-        <img class="private-message-avatar" src="${user.avatar}" alt="Avatar">
-        <span class="private-message-user">${user.name}</span>
+    content: `
+      <div class="private-message-container">
+        <div class="private-message-header">
+          <img class="private-message-avatar" src="${user.avatar}" alt="Avatar">
+          <span class="private-message-user">${user.name}</span>
+        </div>
+        <div class="private-message-body">${message}</div>
       </div>
-      <div class="private-message-body">
-        <p>${message}</p>
-      </div>
-    </div>`,
+    `,
     buttons: {
       ok: {
         label: "OK",
@@ -83,6 +84,10 @@ static async showPopupMessage(user, message) {
       }
     },
     default: "ok"
+  }, {
+    width: 300,
+    height: "auto",
+    classes: ["private-message-dialog"]
   }).render(true);
 }
 
