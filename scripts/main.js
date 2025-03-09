@@ -39,12 +39,17 @@ class PrivateMessageToGM {
 
     // Отправляем личное сообщение всем ГМам
     for (let gm of gms) {
-      ChatMessage.create({
-        user: sender.id,
-        whisper: [gm.id],
-        content: `<strong>${game.i18n.format("private-note.hidden-request", { name: sender.name })}</strong> ${message}`
-      });
-    }
+  ChatMessage.create({
+    user: sender.id,
+    whisper: [gm.id],
+    content: `
+      <div class="private-message-effect">
+        <strong>${game.i18n.format("private-note.hidden-request", { name: sender.name })}</strong>
+        <br>${message}
+      </div>
+    `
+  });
+}
 
     ui.notifications.info(game.i18n.localize("private-note.message-sent"));
   }
