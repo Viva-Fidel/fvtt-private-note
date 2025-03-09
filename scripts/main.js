@@ -46,9 +46,6 @@ class PrivateMessageToGM {
       });
     }
 
-    // Отправляем данные через сокет, чтобы показать popup только у ГМов
-    game.socket.emit(`module.${this.MODULE_ID}`, { sender: sender.id, message });
-
     ui.notifications.info(game.i18n.localize("private-note.message-sent"));
   }
 
@@ -62,36 +59,6 @@ class PrivateMessageToGM {
     this.sendMessageToGM(sender, text);
     return false;
   }
-
-  /** Всплывающее сообщение у ГМа */
-  static async showPopupMessage(sender, message) {
-    const dialog = new Dialog({
-      title: game.i18n.localize("private-note.popup.title"),
-      content: `
-        <div class="private-message-container">
-          <div class="private-message-header">
-            <img class="private-message-avatar" src="${sender.avatar}" alt="Avatar">
-            <span class="private-message-user">${sender.name}</span>
-          </div>
-          <div class="private-message-body">${message}</div>
-        </div>
-      `,
-      buttons: {
-        ok: {
-          label: "OK",
-          callback: () => console.log("Сообщение закрыто")
-        }
-      },
-      default: "ok"
-    });
-
-    dialog.render(true);
-
-    // Закрытие через 10 секунд
-    setTimeout(() => {
-      dialog.close();
-    }, 10000);
-  }
 }
 
 /** Инициализация модуля */
@@ -100,17 +67,5 @@ Hooks.once("init", () => {
 
   Hooks.on("chatMessage", (chatLog, message, chatData) => {
     return PrivateMessageToGM.onChatMessage(message, chatData);
-  });
-});
-
-/** Обработчик сокета для ГМов */
-Hooks.once("ready", () => {
-  game.socket.on(`module.${PrivateMessageToGM.MODULE_ID}`, (data) => {
-    if (!game.user.isGM) return; // Только ГМы видят popup
-
-    const sender = game.users.get(data.sender);
-    if (sender) {
-      PrivateMessageToGM.showPopupMessage(sender, data.message);
-    }
   });
 });
